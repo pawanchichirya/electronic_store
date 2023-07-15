@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.pc.electronic.store.dtos.UserDto;
 import com.pc.electronic.store.entities.User;
+import com.pc.electronic.store.exceptions.ResourceNotFoundException;
 import com.pc.electronic.store.repositories.UserRepository;
 import com.pc.electronic.store.services.UserService;
 
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto updateUser(UserDto userDto, String userId) {
 		// TODO Auto-generated method stub
-		User user=userRepository.findById(userId).orElseThrow(()-> new RuntimeException("no user found with such id"));
+		User user=userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("no user found with such id"));
 		user.setName(userDto.getName());
 		user.setAbout(userDto.getAbout());
 		user.setGender(userDto.getGender());
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void deleteUser(String usrId) {
 		// TODO Auto-generated method stub
-		User user=userRepository.findById(usrId).orElseThrow(()-> new RuntimeException("no user found with such id"));
+		User user=userRepository.findById(usrId).orElseThrow(()-> new ResourceNotFoundException("no user found with such id"));
 		userRepository.delete(user);
 	}
 
@@ -66,7 +67,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto getUserById(String userId) {
 		// TODO Auto-generated method stub
-		User user=userRepository.findById(userId).orElseThrow(()-> new RuntimeException("no user found with such id"));
+		User user=userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("no user found with such id"));
 		UserDto userDto=entityToDto(user);
 		return userDto;
 	}
@@ -74,7 +75,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto getUserByEmail(String email) {
 		// TODO Auto-generated method stub
-		User user=userRepository.findByEmail(email).orElseThrow(()-> new RuntimeException("No user found with such email id"));
+		User user=userRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException("No user found with such email id"));
 		UserDto userDto=entityToDto(user);
 		return userDto;
 	}
@@ -82,7 +83,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<UserDto> searchUser(String keyword) {
 		// TODO Auto-generated method stub
-		List<User> users=userRepository.findByNameContaining(keyword).orElseThrow(()-> new RuntimeException("No user found"));
+		List<User> users=userRepository.findByNameContaining(keyword).orElseThrow(()-> new ResourceNotFoundException("No user found"));
 		List<UserDto> userDtoList=users.stream().map(user->entityToDto(user)).collect(Collectors.toList());
 		return userDtoList;
 	}
