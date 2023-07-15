@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
-import org.apache.logging.log4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.http.HttpStatus;
@@ -28,6 +27,14 @@ public class GlobalExceptionHandler {
 		logger.info("Exception handler invoked");
 		ApiResponseMessage response=ApiResponseMessage.builder().message(ex.getMessage()).status(HttpStatus.NOT_FOUND).success(true).build();
 		return new ResponseEntity(response, HttpStatus.NOT_FOUND);
+	}
+	
+	
+	@ExceptionHandler(BadApiRequest.class)
+	public ResponseEntity<ApiResponseMessage> handleBadApiRequest(BadApiRequest ex){
+		logger.info("Exception handler invoked");
+		ApiResponseMessage response=ApiResponseMessage.builder().message(ex.getMessage()).status(HttpStatus.BAD_REQUEST).success(false).build();
+		return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)

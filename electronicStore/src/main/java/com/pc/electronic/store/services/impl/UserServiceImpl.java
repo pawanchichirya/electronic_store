@@ -1,11 +1,17 @@
 package com.pc.electronic.store.services.impl;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,6 +34,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Value("${user.profile.image.path}")
+	private String imagePath;
 	
 	@Override
 	public UserDto createUser(UserDto userDto) {
@@ -59,6 +68,17 @@ public class UserServiceImpl implements UserService {
 	public void deleteUser(String usrId) {
 		// TODO Auto-generated method stub
 		User user=userRepository.findById(usrId).orElseThrow(()-> new ResourceNotFoundException("no user found with such id"));
+		
+		//delete image from folder when user is deleted from backend
+		String fullPath=imagePath+ user.getImageName();
+		try {
+			Path path=Paths.get(fullPath);
+			Files.delete(path);
+		} catch(NoSuchFileException ex) {
+			ex.printStackTrace();
+		} catch(IOException ex) {
+			ex.printStackTrace();
+		}
 		userRepository.delete(user);
 	}
 
