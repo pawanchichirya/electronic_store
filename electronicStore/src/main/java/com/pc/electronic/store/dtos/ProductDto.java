@@ -2,8 +2,6 @@ package com.pc.electronic.store.dtos;
 
 import java.util.Date;
 
-import com.pc.electronic.store.entities.Product;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,4 +24,5 @@ public class ProductDto {
 	private boolean live;
 	private boolean stock;	
 	private String imageName;
+	private CategoryDto category;
 }
