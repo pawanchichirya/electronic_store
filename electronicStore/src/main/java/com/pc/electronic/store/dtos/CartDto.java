@@ -19,6 +19,6 @@ public class CartDto {
 	
 	private String cartId;
 	private Date createdAt;
-	private User user;
+	private UserDto user;
 	private List<CartItemDto> items=new ArrayList<>();
 }
